@@ -1,0 +1,50 @@
+=UnicodeNormalizationCharFilter=
+
+UnicodeNormalizationCharはSolrでICU - International Components forUnicode準拠
+の正規化を行うCharFilterです。
+
+Solr 3.6.1 用です。
+
+
+=ビルドの準備=
+
+プロジェクトをビルドするために下記のいくつかのモジュールをlibディレクトリ内に
+配置する必要があります。
+
+lib/
+  apache-solr-core-3.6.1.jar               - apache-solr-3.6.1.tgz/dist/apache-solr-core-3.6.1.jar
+  apache-solr-solrj-3.6.1.jar              - apache-solr-3.6.1.tgz/dist/apache-solr-solrj-3.6.1.jar
+  lucene-core-3.6.1.jar                    - apache-solr-3.6.1.tgz/dist/apache-solr-3.6.1.war/WEB-INF/lib/lucene-core-3.6.1.jar
+  lucene-test-framework-3.6.1-SHAPSHOT.jar - apache-solr-3.6.1-src.tgz/lucene/build/test-framework/lucene-test-framework-3.6.1-SNAPSHOT.jar
+  junit-4.10.jar                           - apache-solr-3.6.1-src.tgz/lucene/test-framework/lib/junit-4.10.jar
+  icu4j-4.8.1.1.jar                        - apache-solr-3.6.1.tgz/contrib/analysis-extras/lib/icu4j-4.8.1.1.jar
+
+
+=ビルド=
+
+ビルドするには 'ant' コマンドを実行します。続いてテストするために 'ant test' 
+を実行します。
+
+
+=使用例=
+
+ビルドが完了するとdistディレクトリに
+livedoor-solr-UnicodeNormalizationCharFilter-X.X.X.jar が生成されているので、
+icu4j-X.X.jarファイルと共にSolrのdistまたはlibディレクトリにコピーします。
+
+schema.xml.example:
+
+    <fieldType name="text-norm" class="solr.TextField">
+      <analyzer>
+        <charFilter
+          class="com.livedoor.solr.analysis.UnicodeNormalizationCharFilter"
+          mode="nfkc"
+          />
+      </analyzer>
+    </fieldType>
+
+charFilterの定義部分には下記の属性があります。
+
+ * mode: 正規化のルールをnfd,nfkd,nfc,nfkcから指定
+
+

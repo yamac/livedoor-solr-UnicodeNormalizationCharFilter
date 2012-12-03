@@ -1,0 +1,51 @@
+=UnicodeNormalizationCharFilter=
+
+UnicodeNormalizationCharはSolrでICU - International Components for Unicode準拠
+の正規化を行うCharFilterです。
+
+Solr 4.0.0 用です。
+
+
+=ビルドの準備=
+
+プロジェクトをビルドするために下記のいくつかのモジュールをlibディレクトリ内に
+配置する必要があります。
+
+lib/
+  lucene-core-4.0.0.jar              - apache-solr-4.0.0.tgz/dist/apache-solr-4.0.0.war/WEB-INF/lib/lucene-core-4.0.0.jar
+  lucene-analyzers-common-4.0.0.jar  - apache-solr-4.0.0.tgz/dist/apache-solr-4.0.0.war/WEB-INF/lib/lucene-analyzers-common-4.0.0.jar
+  lucene-codecs-4.0-SNAPSHOT.jar     - apache-solr-4.0.0-src.tgz/lucene/build/codecs/lucene-codecs-4.0-SNAPSHOT.jar
+  lucene-test-framework-4.0.0.jar    - apache-solr-4.0.0.tgz/dist/test-framework/lucene-libs/lucene-test-framework-4.0.0.jar
+  randomizedtesting-runner-2.0.1.jar - apache-solr-4.0.0.tgz/dist/test-framework/lib/randomizedtesting-runner-2.0.1.jar
+  junit-4.10.jar                     - apache-solr-4.0.0.tgz/dist/test-framework/lib/junit-4.10.jar
+  icu4j-49.1.jar                     - apache-solr-4.0.0.tgz/contrib/analysis-extras/lib/icu4j-49.1.jar
+
+
+=ビルド=
+
+ビルドするには 'ant' コマンドを実行します。続いてテストするために 'ant test' 
+を実行します。
+
+
+=使用例=
+
+ビルドが完了するとdistディレクトリに
+livedoor-lucene-UnicodeNormalizationCharFilter-X.X.X.jar が生成されているので、
+icu4j-X.X.jarファイルと共にSolrのdistまたはlibディレクトリにコピーします。
+
+schema.xml.example:
+
+    <fieldType name="text-norm" class="solr.TextField">
+      <analyzer>
+        <charFilter
+          class="com.livedoor.lucene.analysis.UnicodeNormalizationCharFilter"
+          mode="nfkc"
+          />
+      </analyzer>
+    </fieldType>
+
+charFilterの定義部分には下記の属性があります。
+
+ * mode: 正規化のルールをnfd,nfkd,nfc,nfkcから指定
+
+
